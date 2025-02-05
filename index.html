@@ -51,11 +51,11 @@
         const shopId = urlParams.get('shop_id');
         const employeeId = urlParams.get('employee_id');
 
-        // **Правильные ссылки для браузера (отзывы)**
+        // **Правильные ссылки для браузера (с табом отзывов)**
         const reviewsBrowser = {
-            "1": "https://yandex.ru/maps/org/petrov_jewelry_watch/202367052946/reviews/?ll=30.433014,59.941055&z=16",
-            "2": "https://yandex.ru/maps/org/petrov_jewelry_watch/98434987667/reviews/?ll=30.280868,59.990920&z=16",
-            "3": "https://yandex.ru/maps/org/petrov_jewelry_watch/197362536275/reviews/?ll=30.448774,60.031971&z=16"
+            "1": "https://yandex.ru/maps/org/petrov_jewelry_watch/202367052946/?tab=reviews",
+            "2": "https://yandex.ru/maps/org/petrov_jewelry_watch/98434987667/?tab=reviews",
+            "3": "https://yandex.ru/maps/org/petrov_jewelry_watch/197362536275/?tab=reviews"
         };
 
         let browserUrl = reviewsBrowser[shopId] || "https://yandex.ru/maps/";
