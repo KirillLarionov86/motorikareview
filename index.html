@@ -12,20 +12,28 @@
 
         // Настраиваем ссылки на отзывы для каждой мастерской
         const reviews = {
-            "1": "https://yandex.ru/maps/org/petrov_jewelry_watch/98434987667/?ll=30.280868%2C59.990920&mode=search&sctx=ZAAAAAgBEAAaKAoSCYxLVdricj5AEdC1L6AXBE5AEhIJjSYXY2Adlz8REi7kEdxIeT8iBgABAgMEBSgKOABAAkgBagJydZ0BzczMPaABAKgBAL0Bd7sEBoICFlBldHJvdiBKZXdlbHJ5ICYgV2F0Y2iKAgCSAgCaAgxkZXNrdG9wLW1hcHOqAsUBMzUwNDQ4MDg2MywxNjcwOTEyNzk5ODIsODI4NTc2NTU1NywyMTAyMDM5ODU5NjcsMTQxNzYxOTQ5NywyNTE4NzU2MDc3LDM3NjY2MzkyNDAxLDExMTcyNDY4OTM1MiwyNzg0OTIwOTc2LDM1NTUyMzI5OTIsMjUxODc1NjIxMSw1MDQ2MDU0MDExLDM3NzE1MjM5MTU2LDU4MzE2ODEyNzIsMTA3ODk3MzAxNiw3MTMxNTE2Mjg4MywxNTM0OTYzMjg1MTCwAgE%3D&sll=30.280868%2C59.990920&sspn=0.178592%2C0.080988&text=Petrov%20Jewelry%20%26%20Watch&z=12",  // Мастерская №1
-            "2": "https://yandex.ru/maps/org/petrov_jewelry_watch/98434987667/?ll=30.280868%2C59.990920&mode=search&sctx=ZAAAAAgBEAAaKAoSCYxLVdricj5AEdC1L6AXBE5AEhIJjSYXY2Adlz8REi7kEdxIeT8iBgABAgMEBSgKOABAAkgBagJydZ0BzczMPaABAKgBAL0Bd7sEBoICFlBldHJvdiBKZXdlbHJ5ICYgV2F0Y2iKAgCSAgCaAgxkZXNrdG9wLW1hcHOqAsUBMzUwNDQ4MDg2MywxNjcwOTEyNzk5ODIsODI4NTc2NTU1NywyMTAyMDM5ODU5NjcsMTQxNzYxOTQ5NywyNTE4NzU2MDc3LDM3NjY2MzkyNDAxLDExMTcyNDY4OTM1MiwyNzg0OTIwOTc2LDM1NTUyMzI5OTIsMjUxODc1NjIxMSw1MDQ2MDU0MDExLDM3NzE1MjM5MTU2LDU4MzE2ODEyNzIsMTA3ODk3MzAxNiw3MTMxNTE2Mjg4MywxNTM0OTYzMjg1MTCwAgE%3D&sll=30.280868%2C59.990920&sspn=0.178592%2C0.080988&text=Petrov%20Jewelry%20%26%20Watch&z=12",  // Мастерская №2
-            "3": "https://yandex.ru/maps/org/petrov_jewelry_watch/98434987667/?ll=30.280868%2C59.990920&mode=search&sctx=ZAAAAAgBEAAaKAoSCYxLVdricj5AEdC1L6AXBE5AEhIJjSYXY2Adlz8REi7kEdxIeT8iBgABAgMEBSgKOABAAkgBagJydZ0BzczMPaABAKgBAL0Bd7sEBoICFlBldHJvdiBKZXdlbHJ5ICYgV2F0Y2iKAgCSAgCaAgxkZXNrdG9wLW1hcHOqAsUBMzUwNDQ4MDg2MywxNjcwOTEyNzk5ODIsODI4NTc2NTU1NywyMTAyMDM5ODU5NjcsMTQxNzYxOTQ5NywyNTE4NzU2MDc3LDM3NjY2MzkyNDAxLDExMTcyNDY4OTM1MiwyNzg0OTIwOTc2LDM1NTUyMzI5OTIsMjUxODc1NjIxMSw1MDQ2MDU0MDExLDM3NzE1MjM5MTU2LDU4MzE2ODEyNzIsMTA3ODk3MzAxNiw3MTMxNTE2Mjg4MywxNTM0OTYzMjg1MTCwAgE%3D&sll=30.280868%2C59.990920&sspn=0.178592%2C0.080988&text=Petrov%20Jewelry%20%26%20Watch&z=12"   // Мастерская №3
+            "1": "https://yandex.ru/maps/org/petrov_jewelry_watch/202367052946/reviews/?ll=30.433014%2C59.941055&mode=search&ncrnd=1",
+            "2": "https://yandex.ru/maps/org/petrov_jewelry_watch/98434987667/reviews/?ll=30.280868%2C59.990920&mode=search&ncrnd=1",
+            "3": "https://yandex.ru/maps/org/petrov_jewelry_watch/197362536275/reviews/?ll=30.448774%2C60.031971&mode=search&ncrnd=1"
         };
 
-        // Фиксируем переход в Яндекс Метрике
+        // Определяем ссылку на отзывы (по умолчанию — главная Яндекс.Карт)
+        let redirectUrl = reviews[shopId] || "https://yandex.ru/maps?ncrnd=1";
+
+        // Фиксация события в Яндекс Метрике (если есть `employee_id`)
         if (employeeId) {
             ym(80551024, 'reachGoal', 'review_redirect', { employee_id: employeeId, shop_id: shopId });
         }
 
-        // Определяем ссылку для редиректа
-        let redirectUrl = reviews[shopId] || "https://yandex.ru/maps"; // Если shop_id неверный, ведём на главную
+        // Попытка редиректа через `intent://` (Android)
+        let androidIntent = `intent://${redirectUrl.replace('https://', '')}#Intent;scheme=https;package=ru.yandex.yandexmaps;end;`;
 
-        // Перенаправляем пользователя через 2 секунды
+        // Пробуем сначала открыть приложение (Android)
+        setTimeout(() => {
+            window.location.href = androidIntent;
+        }, 500);
+
+        // Если через 2 секунды не сработало – открываем обычный браузер
         setTimeout(() => {
             window.location.href = redirectUrl;
         }, 2000);
