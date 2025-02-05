@@ -14,7 +14,7 @@
         const shopId = urlParams.get('shop_id');
         const employeeId = urlParams.get('employee_id');
 
-        // **Правильные ссылки для отзывов (универсальные для браузера и приложения)**
+        // **Правильные ссылки для отзывов**
         const reviewsUrl = {
             "1": "https://yandex.ru/maps/org/petrov_jewelry_watch/202367052946/reviews/",
             "2": "https://yandex.ru/maps/org/petrov_jewelry_watch/98434987667/reviews/",
@@ -31,10 +31,8 @@
         // **Выводим ссылку в консоль для проверки**
         console.log("Редирект на:", redirectUrl);
 
-        // **Автоматическое перенаправление**
-        setTimeout(() => {
-            window.location.replace(redirectUrl);
-        }, 500);
+        // **Гарантированный редирект**
+        window.location.href = redirectUrl;
     </script>
 </body>
 </html>
