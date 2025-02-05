@@ -21,7 +21,7 @@
         let fullUrl = window.location.href;
         logMessage("🔗 Текущий URL: " + fullUrl);
 
-        // **Альтернативный способ получить параметры из URL**
+        // **Функция получения параметров вручную**
         function getQueryParam(param) {
             let result = new RegExp(param + "=([^&]*)", "i").exec(window.location.search);
             return result ? result[1] : null;
@@ -41,13 +41,13 @@
             "3": "https://yandex.ru/maps/org/petrov_jewelry_watch/197362536275/reviews/"
         };
 
-        let redirectUrl = reviewsUrl[shopId];
+        let redirectUrl = reviewsUrl[shopId] || "https://yandex.ru/maps/";
 
         logMessage("📌 Проверяем соответствие shop_id...");
         if (redirectUrl) {
             logMessage("✅ Найдена правильная ссылка: " + redirectUrl);
         } else {
-            logMessage("❌ Ошибка! Неверный shop_id: " + shopId);
+            logMessage("❌ Ошибка! Неизвестный shop_id: " + shopId);
         }
 
         // **Фиксация перехода в Яндекс.Метрике**
@@ -56,18 +56,13 @@
             ym(80551024, 'reachGoal', 'review_redirect', { employee_id: employeeId, shop_id: shopId });
         }
 
-        // **Выводим итоговую ссылку**
-        if (redirectUrl) {
-            logMessage("🚀 Готовимся к редиректу...");
-            logMessage("🌍 Открываем: " + redirectUrl);
-            
-            setTimeout(() => {
-                window.location.replace(redirectUrl);
-            }, 1000);
-        } else {
-            logMessage("❌ Ошибка! Не удалось определить страницу отзывов.");
-            document.body.innerHTML = "<h2 style='color: red;'>Ошибка: Неверный shop_id!</h2>";
-        }
+        // **Перенаправление**
+        logMessage("🚀 Готовимся к редиректу...");
+        logMessage("🌍 Открываем: " + redirectUrl);
+        
+        setTimeout(() => {
+            window.location.replace(redirectUrl);
+        }, 1000);
     </script>
 </body>
 </html>
