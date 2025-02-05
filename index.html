@@ -45,34 +45,34 @@
         const shopId = urlParams.get('shop_id');
         const employeeId = urlParams.get('employee_id');
 
-        // Настраиваем ссылки на отзывы для каждой мастерской
+        // **Ссылки для браузера (из Яндекс.Карт в вебе)**
         const reviewsBrowser = {
             "1": "https://yandex.ru/maps/org/petrov_jewelry_watch/202367052946/reviews/?ncrnd=1",
             "2": "https://yandex.ru/maps/org/petrov_jewelry_watch/98434987667/reviews/?ncrnd=1",
             "3": "https://yandex.ru/maps/org/petrov_jewelry_watch/197362536275/reviews/?ncrnd=1"
         };
 
-        // **СПЕЦИАЛЬНЫЕ ССЫЛКИ ДЛЯ ПРИЛОЖЕНИЯ ЯНДЕКС.КАРТ**
+        // **Ссылки для мобильного приложения (из приложения Яндекс.Карт)**
         const reviewsApp = {
-            "1": "yandexmaps://maps.yandex.ru/?oid=202367052946",
-            "2": "yandexmaps://maps.yandex.ru/?oid=98434987667",
-            "3": "yandexmaps://maps.yandex.ru/?oid=197362536275"
+            "1": "https://yandex.ru/maps/org/petrov_jewelry_watch/202367052946?si=e85a525rup917a49htgq24gav8",
+            "2": "https://yandex.ru/maps/org/petrov_jewelry_watch/98434987667?si=e85a525rup917a49htgq24gav8",
+            "3": "https://yandex.ru/maps/org/petrov_jewelry_watch/197362536275?si=e85a525rup917a49htgq24gav8"
         };
 
         let browserUrl = reviewsBrowser[shopId] || "https://yandex.ru/maps?ncrnd=1";
-        let appUrl = reviewsApp[shopId] || "yandexmaps://maps.yandex.ru";
+        let appUrl = reviewsApp[shopId] || "https://yandex.ru/maps";
 
         // Фиксация в Яндекс Метрике
         if (employeeId) {
             ym(80551024, 'reachGoal', 'review_redirect', { employee_id: employeeId, shop_id: shopId });
         }
 
-        // Открытие в мобильном приложении (правильный формат)
+        // **Открытие в мобильном приложении (правильный формат)**
         document.getElementById('openApp').addEventListener('click', function() {
             window.location.href = appUrl;
         });
 
-        // Открытие в браузере (запрещаем Safari и Chrome переходить в приложение)
+        // **Открытие в браузере (избегаем редиректа в приложение)**
         document.getElementById('openBrowser').addEventListener('click', function() {
             window.open(browserUrl, "_blank", "noopener,noreferrer");
         });
