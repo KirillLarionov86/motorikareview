@@ -6,35 +6,18 @@
     <title>Перенаправление...</title>
 </head>
 <body>
-    <h2>Перенаправление...</h2>
-    <p id="log">Ждём данные...</p>
+    <h2>Перенаправляем вас на страницу отзывов в Яндекс. Пожалуйста, подождите...</h2>
 
     <script>
-        function logMessage(message) {
-            console.log(message);
-            document.getElementById('log').innerHTML += "<br>" + message;
-        }
-
-        logMessage("🔵 Начинаем обработку редиректа...");
-
-        // **Выводим полный URL страницы**
-        let fullUrl = window.location.href;
-        logMessage("🔗 Текущий URL: " + fullUrl);
-
-        // **Функция получения параметров вручную**
+        // Функция получения параметров из URL
         function getQueryParam(param) {
             let result = new RegExp(param + "=([^&]*)", "i").exec(window.location.search);
             return result ? result[1] : null;
         }
 
         const shopId = getQueryParam("shop_id");
-        const employeeId = getQueryParam("employee_id");
 
-        logMessage("🔍 Полученные параметры:");
-        logMessage("➡️ shop_id: " + (shopId ? shopId : "❌ Параметр shop_id отсутствует!"));
-        logMessage("➡️ employee_id: " + (employeeId ? employeeId : "⚠️ employee_id не указан"));
-
-        // **Правильные ссылки для отзывов**
+        // Ссылки на отзывы для каждой мастерской
         const reviewsUrl = {
             "1": "https://yandex.ru/maps/org/petrov_jewelry_watch/202367052946/reviews/",
             "2": "https://yandex.ru/maps/org/petrov_jewelry_watch/98434987667/reviews/",
@@ -43,23 +26,7 @@
 
         let redirectUrl = reviewsUrl[shopId] || "https://yandex.ru/maps/";
 
-        logMessage("📌 Проверяем соответствие shop_id...");
-        if (redirectUrl) {
-            logMessage("✅ Найдена правильная ссылка: " + redirectUrl);
-        } else {
-            logMessage("❌ Ошибка! Неизвестный shop_id: " + shopId);
-        }
-
-        // **Фиксация перехода в Яндекс.Метрике**
-        if (employeeId) {
-            logMessage("📊 Фиксируем событие в Яндекс.Метрике...");
-            ym(80551024, 'reachGoal', 'review_redirect', { employee_id: employeeId, shop_id: shopId });
-        }
-
-        // **Перенаправление**
-        logMessage("🚀 Готовимся к редиректу...");
-        logMessage("🌍 Открываем: " + redirectUrl);
-        
+        // Перенаправление через 1 секунду
         setTimeout(() => {
             window.location.replace(redirectUrl);
         }, 1000);
