@@ -6,13 +6,19 @@
     <title>Перенаправление...</title>
 </head>
 <body>
-    <p>Перенаправляем вас на страницу отзывов...</p>
-
+    <p id="message">Перенаправляем вас на страницу отзывов...</p>
     <script>
         // Получаем параметры из URL
         const urlParams = new URLSearchParams(window.location.search);
         const shopId = urlParams.get('shop_id');
         const employeeId = urlParams.get('employee_id');
+
+        // Проверяем наличие shop_id
+        if (!shopId) {
+            console.error("Ошибка: параметр 'shop_id' отсутствует в URL.");
+            document.getElementById('message').textContent = "❌ Ошибка: Параметр 'shop_id' отсутствует в URL.";
+            return;
+        }
 
         // **Правильные ссылки для отзывов**
         const reviewsUrl = {
@@ -21,7 +27,15 @@
             "3": "https://yandex.ru/maps/org/petrov_jewelry_watch/197362536275/reviews/"
         };
 
-        let redirectUrl = reviewsUrl[shopId] || "https://yandex.ru/maps/";
+        // Проверяем, что shop_id существует в объекте reviewsUrl
+        if (!reviewsUrl[shopId]) {
+            console.error(`Ошибка: shop_id=${shopId} не найден в списке доступных магазинов.`);
+            document.getElementById('message').textContent = `❌ Ошибка: shop_id=${shopId} не найден в списке доступных магазинов.`;
+            return;
+        }
+
+        // Формируем правильную ссылку
+        let redirectUrl = reviewsUrl[shopId];
 
         // **Фиксация перехода в Яндекс.Метрике**
         if (employeeId) {
