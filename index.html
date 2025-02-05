@@ -4,6 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Перенаправление...</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+        }
+        .modal button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <p>Выберите, где открыть страницу отзывов:</p>
+
+    <div class="modal" id="choiceModal">
+        <p>Выберите способ открытия:</p>
+        <button id="openApp">Открыть в приложении</button>
+        <button id="openBrowser">Открыть в браузере</button>
+    </div>
+
     <script>
         // Получаем параметры из URL
         const urlParams = new URLSearchParams(window.location.search);
@@ -12,34 +49,32 @@
 
         // Настраиваем ссылки на отзывы для каждой мастерской
         const reviews = {
-            "1": "https://yandex.ru/maps/org/petrov_jewelry_watch/202367052946/reviews/?ll=30.433014%2C59.941055&mode=search&ncrnd=1",
-            "2": "https://yandex.ru/maps/org/petrov_jewelry_watch/98434987667/reviews/?ll=30.280868%2C59.990920&mode=search&ncrnd=1",
-            "3": "https://yandex.ru/maps/org/petrov_jewelry_watch/197362536275/reviews/?ll=30.448774%2C60.031971&mode=search&ncrnd=1"
+            "1": "https://yandex.ru/maps/org/petrov_jewelry_watch/202367052946/reviews/?ncrnd=1",
+            "2": "https://yandex.ru/maps/org/petrov_jewelry_watch/98434987667/reviews/?ncrnd=1",
+            "3": "https://yandex.ru/maps/org/petrov_jewelry_watch/197362536275/reviews/?ncrnd=1"
         };
 
-        // Определяем ссылку на отзывы (по умолчанию — главная Яндекс.Карт)
         let redirectUrl = reviews[shopId] || "https://yandex.ru/maps?ncrnd=1";
 
-        // Фиксация события в Яндекс Метрике (если есть `employee_id`)
+        // Фиксация в Яндекс Метрике
         if (employeeId) {
             ym(80551024, 'reachGoal', 'review_redirect', { employee_id: employeeId, shop_id: shopId });
         }
 
-        // Попытка редиректа через `intent://` (Android)
-        let androidIntent = `intent://${redirectUrl.replace('https://', '')}#Intent;scheme=https;package=ru.yandex.yandexmaps;end;`;
+        // Показываем окно выбора
+        document.getElementById('choiceModal').style.display = 'block';
 
-        // Пробуем сначала открыть приложение (Android)
-        setTimeout(() => {
-            window.location.href = androidIntent;
-        }, 500);
+        // Открыть в приложении (Android и iOS)
+        document.getElementById('openApp').addEventListener('click', function() {
+            let appRedirect = `yandexmaps://maps.yandex.ru?text=${encodeURIComponent(redirectUrl)}`;
+            window.location.href = appRedirect;
+        });
 
-        // Если через 2 секунды не сработало – открываем обычный браузер
-        setTimeout(() => {
+        // Открыть в браузере
+        document.getElementById('openBrowser').addEventListener('click', function() {
             window.location.href = redirectUrl;
-        }, 2000);
+        });
+
     </script>
-</head>
-<body>
-    <p>Перенаправляем вас на страницу отзывов...</p>
 </body>
 </html>
