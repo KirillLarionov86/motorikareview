@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Перенаправление...</title>
+    <title>Выбор способа открытия</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,7 +11,7 @@
             padding: 50px;
         }
         .modal {
-            display: none;
+            display: block;
             position: fixed;
             top: 50%;
             left: 50%;
@@ -24,7 +24,7 @@
         .modal button {
             display: block;
             width: 100%;
-            padding: 10px;
+            padding: 15px;
             margin: 10px 0;
             font-size: 16px;
             cursor: pointer;
@@ -33,12 +33,10 @@
 </head>
 <body>
 
-    <p>Выберите, где открыть страницу отзывов:</p>
-
     <div class="modal" id="choiceModal">
-        <p>Выберите способ открытия:</p>
-        <button id="openApp">Открыть в приложении</button>
-        <button id="openBrowser">Открыть в браузере</button>
+        <p>Как открыть страницу отзывов?</p>
+        <button id="openApp">📱 В мобильном приложении</button>
+        <button id="openBrowser">🌍 В браузере</button>
     </div>
 
     <script>
@@ -56,21 +54,18 @@
 
         let redirectUrl = reviews[shopId] || "https://yandex.ru/maps?ncrnd=1";
 
-        // Фиксация в Яндекс Метрике
+        // Фиксация в Яндекс Метрике (если есть ID сотрудника)
         if (employeeId) {
             ym(80551024, 'reachGoal', 'review_redirect', { employee_id: employeeId, shop_id: shopId });
         }
 
-        // Показываем окно выбора
-        document.getElementById('choiceModal').style.display = 'block';
-
-        // Открыть в приложении (Android и iOS)
+        // Открытие в приложении (Android и iOS)
         document.getElementById('openApp').addEventListener('click', function() {
-            let appRedirect = `yandexmaps://maps.yandex.ru?text=${encodeURIComponent(redirectUrl)}`;
+            let appRedirect = `yandexmaps://maps.yandex.ru/?mode=search&text=${encodeURIComponent(redirectUrl)}`;
             window.location.href = appRedirect;
         });
 
-        // Открыть в браузере
+        // Открытие в браузере
         document.getElementById('openBrowser').addEventListener('click', function() {
             window.location.href = redirectUrl;
         });
