@@ -15,9 +15,15 @@
         }
 
         logMessage("🔵 Начинаем обработку редиректа...");
+        
+        // **Выводим полный URL страницы**
+        let fullUrl = window.location.href;
+        logMessage("🔗 Текущий URL: " + fullUrl);
 
-        // Получаем параметры из URL
+        // **Получаем параметры из URL**
         const urlParams = new URLSearchParams(window.location.search);
+        logMessage("📜 Полный список параметров: " + urlParams.toString());
+
         const shopId = urlParams.get('shop_id');
         const employeeId = urlParams.get('employee_id');
 
@@ -38,7 +44,7 @@
         if (redirectUrl) {
             logMessage("✅ Найдена правильная ссылка: " + redirectUrl);
         } else {
-            logMessage("❌ Ошибка! Неизвестный shop_id: " + shopId);
+            logMessage("❌ Ошибка! Неверный shop_id: " + shopId);
         }
 
         // **Фиксация перехода в Яндекс.Метрике**
