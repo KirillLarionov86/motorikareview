@@ -58,7 +58,7 @@
             return;
         }
 
-        // **Правильные ссылки для браузера (отзывы)**
+        // **Правильные базовые ссылки для браузера (отзывы)**
         const reviewsBrowser = {
             "1": "https://yandex.ru/maps/org/petrov_jewelry_watch/202367052946/reviews/",
             "2": "https://yandex.ru/maps/org/petrov_jewelry_watch/98434987667/reviews/",
@@ -74,17 +74,37 @@
             return;
         }
 
-        // Устанавливаем правильную ссылку
-        const browserUrl = reviewsBrowser[shopId];
-        console.log("Ссылка на отзывы в браузере:", browserUrl);
+        // Базовая ссылка для выбранного shop_id
+        let baseBrowserUrl = reviewsBrowser[shopId];
+
+        // Добавляем дополнительные параметры к ссылке
+        const additionalParams = {
+            ll: "30.280868,59.990920", // Координаты центра карты
+            z: "12.29",               // Масштаб карты
+            mode: "search",           // Режим поиска
+            sctx: "ZAAAAAgBEAAaKAoSCYxLVdricj5AEdC1L6AXBE5AEhIJjSYXY2Adlz8REi7kEdxIeT8iBgABAgMEBSgKOABAAkgBagJydZ0BzczMPaABAKgBAL0Bd7sEBoICFlBldHJvdiBKZXdlbHJ5ICYgV2F0Y2iKAgCSAgCaAgxkZXNrdG9wLW1hcHOqAsUBMzUwNDQ4MDg2MywxNjcwOTEyNzk5ODIsODI4NTc2NTU1NywyMTAyMDM5ODU5NjcsMTQxNzYxOTQ5NywyNTE4NzU2MDc3LDM3NjY2MzkyNDAxLDExMTcyNDY4OTM1MiwyNzg0OTIwOTc2LDM1NTUyMzI5OTIsMjUxODc1NjIxMSw1MDQ2MDU0MDExLDM3NzE1MjM5MTU2LDU4MzE2ODEyNzIsMTA3ODk3MzAxNiw3MTMxNTE2Mjg4MywxNTM0OTYzMjg1MTCwAgE=", // Контекст поиска
+            tab: "reviews",           // Вкладка отзывов
+            text: "Petrov Jewelry & Watch", // Поисковый запрос
+            sll: "30.280868,59.990920", // Координаты центра поиска
+            sspn: "0.178592,0.080988"   // Размер области видимости
+        };
+
+        // Формируем финальную ссылку
+        let finalUrl = `${baseBrowserUrl}?`;
+        for (const [key, value] of Object.entries(additionalParams)) {
+            finalUrl += `${encodeURIComponent(key)}=${encodeURIComponent(value)}&`;
+        }
+        finalUrl = finalUrl.slice(0, -1); // Убираем последний символ "&"
+
+        console.log("Финальная ссылка:", finalUrl);
 
         // Фиксация в Яндекс Метрике
         if (employeeId) {
             ym(80551024, 'reachGoal', 'review_redirect', { employee_id: employeeId, shop_id: shopId });
         }
 
-        // Устанавливаем ссылку для открытия в браузере
-        document.getElementById('openBrowser').href = browserUrl;
+        // Устанавливаем финальную ссылку для кнопки
+        document.getElementById('openBrowser').href = finalUrl;
     </script>
 </body>
 </html>
