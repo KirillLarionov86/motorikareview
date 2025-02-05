@@ -60,9 +60,9 @@
 
         // **Правильные базовые ссылки для браузера (отзывы)**
         const reviewsBrowser = {
-            "1": "https://yandex.ru/maps/org/petrov_jewelry_watch/202367052946/reviews/",
-            "2": "https://yandex.ru/maps/org/petrov_jewelry_watch/98434987667/reviews/",
-            "3": "https://yandex.ru/maps/org/petrov_jewelry_watch/197362536275/reviews/"
+            "1": "https://yandex.ru/maps/org/petrov_jewelry_watch/202367052946",
+            "2": "https://yandex.ru/maps/org/petrov_jewelry_watch/98434987667",
+            "3": "https://yandex.ru/maps/org/petrov_jewelry_watch/197362536275"
         };
 
         // Проверяем, что shop_id существует в объекте reviewsBrowser
@@ -82,7 +82,6 @@
             ll: "30.280868,59.990920", // Координаты центра карты
             z: "12.29",               // Масштаб карты
             mode: "search",           // Режим поиска
-            sctx: "ZAAAAAgBEAAaKAoSCYxLVdricj5AEdC1L6AXBE5AEhIJjSYXY2Adlz8REi7kEdxIeT8iBgABAgMEBSgKOABAAkgBagJydZ0BzczMPaABAKgBAL0Bd7sEBoICFlBldHJvdiBKZXdlbHJ5ICYgV2F0Y2iKAgCSAgCaAgxkZXNrdG9wLW1hcHOqAsUBMzUwNDQ4MDg2MywxNjcwOTEyNzk5ODIsODI4NTc2NTU1NywyMTAyMDM5ODU5NjcsMTQxNzYxOTQ5NywyNTE4NzU2MDc3LDM3NjY2MzkyNDAxLDExMTcyNDY4OTM1MiwyNzg0OTIwOTc2LDM1NTUyMzI5OTIsMjUxODc1NjIxMSw1MDQ2MDU0MDExLDM3NzE1MjM5MTU2LDU4MzE2ODEyNzIsMTA3ODk3MzAxNiw3MTMxNTE2Mjg4MywxNTM0OTYzMjg1MTCwAgE=", // Контекст поиска
             tab: "reviews",           // Вкладка отзывов
             text: "Petrov Jewelry & Watch", // Поисковый запрос
             sll: "30.280868,59.990920", // Координаты центра поиска
@@ -90,7 +89,7 @@
         };
 
         // Формируем финальную ссылку
-        let finalUrl = `${baseBrowserUrl}?`;
+        let finalUrl = `${baseBrowserUrl}/reviews?`;
         for (const [key, value] of Object.entries(additionalParams)) {
             finalUrl += `${encodeURIComponent(key)}=${encodeURIComponent(value)}&`;
         }
