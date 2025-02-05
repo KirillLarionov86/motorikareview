@@ -39,91 +39,49 @@
     </style>
 </head>
 <body>
+
     <div class="modal" id="choiceModal">
         <p>Как открыть страницу отзывов?</p>
+        <a id="openApp" href="#" target="_blank">📱 Открыть в мобильном приложении</a>
         <a id="openBrowser" href="#" target="_blank">🌍 Открыть в браузере</a>
-        <a id="openApp" href="#" onclick="openInYandexMaps()">📱 Открыть в Яндекс.Картах</a>
     </div>
+
     <script>
         // Получаем параметры из URL
         const urlParams = new URLSearchParams(window.location.search);
         const shopId = urlParams.get('shop_id');
         const employeeId = urlParams.get('employee_id');
 
-        // Проверяем наличие shop_id
-        if (!shopId) {
-            console.error("Ошибка: параметр 'shop_id' отсутствует в URL.");
-            alert("Ошибка: параметр 'shop_id' отсутствует в URL. Передайте его в виде ?shop_id=1");
-            document.getElementById('openBrowser').href = "#";
-            document.getElementById('openBrowser').textContent = "❌ Ошибка: Откройте страницу с корректным shop_id";
-            return;
-        }
-
-        // **Правильные базовые ссылки для браузера (отзывы)**
+        // **Правильные ссылки для браузера (отзывы)**
         const reviewsBrowser = {
-            "1": "https://yandex.ru/maps/org/petrov_jewelry_watch/202367052946",
-            "2": "https://yandex.ru/maps/org/petrov_jewelry_watch/98434987667",
-            "3": "https://yandex.ru/maps/org/petrov_jewelry_watch/197362536275"
+            "1": "https://yandex.ru/maps/org/petrov_jewelry_watch/202367052946/reviews/",
+            "2": "https://yandex.ru/maps/org/petrov_jewelry_watch/98434987667/reviews/",
+            "3": "https://yandex.ru/maps/org/petrov_jewelry_watch/197362536275/reviews/"
         };
 
-        // Проверяем, что shop_id существует в объекте reviewsBrowser
-        if (!reviewsBrowser[shopId]) {
-            console.error(`Ошибка: shop_id=${shopId} не найден в списке доступных магазинов.`);
-            alert(`Ошибка: shop_id=${shopId} не найден в списке доступных магазинов.`);
-            document.getElementById('openBrowser').href = "#";
-            document.getElementById('openBrowser').textContent = "❌ Ошибка: Некорректный shop_id";
-            return;
-        }
-
-        // Базовая ссылка для выбранного shop_id
-        let baseBrowserUrl = reviewsBrowser[shopId];
-
-        // Добавляем дополнительные параметры к ссылке
-        const additionalParams = {
-            ll: "30.280868,59.990920", // Координаты центра карты
-            z: "12.29",               // Масштаб карты
-            mode: "search",           // Режим поиска
-            tab: "reviews",           // Вкладка отзывов
-            text: "Petrov Jewelry & Watch", // Поисковый запрос
-            sll: "30.280868,59.990920", // Координаты центра поиска
-            sspn: "0.178592,0.080988"   // Размер области видимости
+        // **Правильные ссылки для мобильного приложения (карточка компании)**
+        const reviewsApp = {
+            "1": "yandexmaps://www.maps.yandex.ru/?oid=202367052946&mode=search",
+            "2": "yandexmaps://www.maps.yandex.ru/?oid=98434987667&mode=search",
+            "3": "yandexmaps://www.maps.yandex.ru/?oid=197362536275&mode=search"
         };
 
-        // Формируем финальную ссылку для браузера
-        let browserUrl = `${baseBrowserUrl}/reviews?`;
-        for (const [key, value] of Object.entries(additionalParams)) {
-            browserUrl += `${encodeURIComponent(key)}=${encodeURIComponent(value)}&`;
-        }
-        browserUrl = browserUrl.slice(0, -1); // Убираем последний символ "&"
+        let browserUrl = reviewsBrowser[shopId] || "https://yandex.ru/maps/";
+        let appUrl = reviewsApp[shopId] || "yandexmaps://www.maps.yandex.ru/?mode=search";
 
-        // Устанавливаем ссылку для кнопки "Открыть в браузере"
-        const browserButton = document.getElementById('openBrowser');
-        browserButton.href = browserUrl;
+        // **Выводим ссылки в консоль (для проверки)**
+        console.log("Ссылка для браузера:", browserUrl);
+        console.log("Ссылка для мобильного приложения:", appUrl);
 
         // Фиксация в Яндекс Метрике
         if (employeeId) {
             ym(80551024, 'reachGoal', 'review_redirect', { employee_id: employeeId, shop_id: shopId });
         }
 
-        // Функция для открытия в Яндекс.Картах
-        function openInYandexMaps() {
-            const appUrl = `yandexmaps://maps.yandex.ru/?oid=${baseBrowserUrl.split('/').pop()}&mode=search`;
-            const fallbackUrl = `https://yandex.ru/maps/org/petrov_jewelry_watch/${baseBrowserUrl.split('/').pop()}`;
+        // Устанавливаем ссылки для открытия
+        document.getElementById('openApp').href = appUrl;
+        document.getElementById('openBrowser').href = browserUrl;
 
-            // Попытка открыть в приложении
-            try {
-                window.location.href = appUrl;
-            } catch (e) {
-                console.warn("Приложение Яндекс.Карт не установлено. Переход в браузер...");
-            }
-
-            // Если приложение не открылось, переходим на fallback URL
-            setTimeout(() => {
-                if (!document.hidden) {
-                    window.location.href = fallbackUrl;
-                }
-            }, 2500); // Ждём 2.5 секунды для проверки открытия приложения
-        }
     </script>
 </body>
 </html>
