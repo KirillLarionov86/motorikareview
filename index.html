@@ -42,7 +42,6 @@
 
     <div class="modal" id="choiceModal">
         <p>Как открыть страницу отзывов?</p>
-        <a id="openApp" href="#" target="_blank">📱 Открыть в мобильном приложении</a>
         <a id="openBrowser" href="#" target="_blank">🌍 Открыть в браузере</a>
     </div>
 
@@ -52,30 +51,21 @@
         const shopId = urlParams.get('shop_id');
         const employeeId = urlParams.get('employee_id');
 
-        // **Ссылки для браузера**
+        // **Ссылки для браузера (точный формат для открытия отзывов)**
         const reviewsBrowser = {
             "1": "https://yandex.ru/maps/org/petrov_jewelry_watch/202367052946/reviews/",
             "2": "https://yandex.ru/maps/org/petrov_jewelry_watch/98434987667/reviews/",
             "3": "https://yandex.ru/maps/org/petrov_jewelry_watch/197362536275/reviews/"
         };
 
-        // **Ссылки для мобильного приложения (точный формат для открытия карточки)**
-        const reviewsApp = {
-            "1": "yandexmaps://maps.yandex.ru/?oid=202367052946&mode=search",
-            "2": "yandexmaps://maps.yandex.ru/?oid=98434987667&mode=search",
-            "3": "yandexmaps://maps.yandex.ru/?oid=197362536275&mode=search"
-        };
+        let browserUrl = reviewsBrowser[shopId] || "https://yandex.ru/maps/";
 
-        let browserUrl = reviewsBrowser[shopId] || "https://yandex.ru/maps";
-        let appUrl = reviewsApp[shopId] || "yandexmaps://maps.yandex.ru/?mode=search";
-
-        // Фиксация в Яндекс Метрике
+        // Фиксация в Яндекс Метрике (для отслеживания переходов)
         if (employeeId) {
             ym(80551024, 'reachGoal', 'review_redirect', { employee_id: employeeId, shop_id: shopId });
         }
 
-        // Подставляем ссылки в кнопки
-        document.getElementById('openApp').href = appUrl;
+        // Устанавливаем ссылку для открытия в браузере
         document.getElementById('openBrowser').href = browserUrl;
 
     </script>
