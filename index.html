@@ -6,7 +6,8 @@
     <title>Перенаправление...</title>
 </head>
 <body>
-    <p id="log">Перенаправляем вас на страницу отзывов...</p>
+    <h2>Перенаправление...</h2>
+    <p id="log">Ждём данные...</p>
 
     <script>
         function logMessage(message) {
@@ -28,8 +29,8 @@
         const employeeId = urlParams.get('employee_id');
 
         logMessage("🔍 Полученные параметры:");
-        logMessage("➡️ shop_id: " + shopId);
-        logMessage("➡️ employee_id: " + employeeId);
+        logMessage("➡️ shop_id: " + (shopId ? shopId : "❌ Параметр shop_id отсутствует!"));
+        logMessage("➡️ employee_id: " + (employeeId ? employeeId : "⚠️ employee_id не указан"));
 
         // **Правильные ссылки для отзывов**
         const reviewsUrl = {
@@ -51,16 +52,13 @@
         if (employeeId) {
             logMessage("📊 Фиксируем событие в Яндекс.Метрике...");
             ym(80551024, 'reachGoal', 'review_redirect', { employee_id: employeeId, shop_id: shopId });
-        } else {
-            logMessage("⚠️ Внимание: employee_id не указан.");
         }
 
-        // **Выводим итоговую ссылку на экран**
+        // **Выводим итоговую ссылку**
         if (redirectUrl) {
             logMessage("🚀 Готовимся к редиректу...");
             logMessage("🌍 Открываем: " + redirectUrl);
             
-            // **Перенаправление (гарантированное)**
             setTimeout(() => {
                 window.location.replace(redirectUrl);
             }, 1000);
