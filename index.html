@@ -21,13 +21,20 @@
             border-radius: 10px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
         }
-        .modal button {
+        .modal a {
             display: block;
             width: 100%;
             padding: 15px;
             margin: 10px 0;
             font-size: 16px;
-            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            color: white;
+            background-color: #007bff;
+            border-radius: 5px;
+        }
+        .modal a:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
@@ -35,8 +42,8 @@
 
     <div class="modal" id="choiceModal">
         <p>Как открыть страницу отзывов?</p>
-        <button id="openApp">📱 В мобильном приложении</button>
-        <button id="openBrowser">🌍 В браузере</button>
+        <a id="openApp" href="#" target="_blank">📱 Открыть в мобильном приложении</a>
+        <a id="openBrowser" href="#" target="_blank">🌍 Открыть в браузере</a>
     </div>
 
     <script>
@@ -52,7 +59,7 @@
             "3": "https://yandex.ru/maps/org/petrov_jewelry_watch/197362536275/reviews/?ncrnd=1"
         };
 
-        // **Ссылки для мобильного приложения (из приложения Яндекс.Карт)**
+        // **Ссылки для мобильного приложения (из Яндекс.Карт)**
         const reviewsApp = {
             "1": "https://yandex.ru/maps/org/petrov_jewelry_watch/202367052946?si=e85a525rup917a49htgq24gav8",
             "2": "https://yandex.ru/maps/org/petrov_jewelry_watch/98434987667?si=e85a525rup917a49htgq24gav8",
@@ -67,15 +74,9 @@
             ym(80551024, 'reachGoal', 'review_redirect', { employee_id: employeeId, shop_id: shopId });
         }
 
-        // **Открытие в мобильном приложении (правильный формат)**
-        document.getElementById('openApp').addEventListener('click', function() {
-            window.location.href = appUrl;
-        });
-
-        // **Открытие в браузере (избегаем редиректа в приложение)**
-        document.getElementById('openBrowser').addEventListener('click', function() {
-            window.open(browserUrl, "_blank", "noopener,noreferrer");
-        });
+        // **Теперь ссылки просто вставляются в кнопки, без редиректа**
+        document.getElementById('openApp').href = appUrl;
+        document.getElementById('openBrowser').href = browserUrl;
 
     </script>
 </body>
