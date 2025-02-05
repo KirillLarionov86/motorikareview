@@ -3,10 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Motorika Review</title>
+    <title>Перенаправление...</title>
+    <script>
+        // Получаем параметры из URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const shopId = urlParams.get('shop_id');
+        const employeeId = urlParams.get('employee_id');
+
+        // Настраиваем ссылки на отзывы для каждой мастерской
+        const reviews = {
+            "1": "https://yandex.ru/maps/org/motornaya-master-1/reviews",  // Мастерская №1
+            "2": "https://yandex.ru/maps/org/motornaya-master-2/reviews",  // Мастерская №2
+            "3": "https://yandex.ru/maps/org/motornaya-master-3/reviews"   // Мастерская №3
+        };
+
+        // Фиксируем переход в Яндекс Метрике
+        if (employeeId) {
+            ym(XXXXXXX, 'reachGoal', 'review_redirect', { employee_id: employeeId, shop_id: shopId });
+        }
+
+        // Определяем ссылку для редиректа
+        let redirectUrl = reviews[shopId] || "https://yandex.ru/maps"; // Если shop_id неверный, ведём на главную
+
+        // Перенаправляем пользователя через 2 секунды
+        setTimeout(() => {
+            window.location.href = redirectUrl;
+        }, 2000);
+    </script>
 </head>
 <body>
-    <h1>Сайт Motorika Review</h1>
-    <p>Настройка в процессе...</p>
+    <p>Перенаправляем вас на страницу отзывов...</p>
 </body>
 </html>
