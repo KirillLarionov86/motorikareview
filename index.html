@@ -16,17 +16,19 @@
         }
 
         logMessage("🔵 Начинаем обработку редиректа...");
-        
+
         // **Выводим полный URL страницы**
         let fullUrl = window.location.href;
         logMessage("🔗 Текущий URL: " + fullUrl);
 
-        // **Получаем параметры из URL**
-        const urlParams = new URLSearchParams(window.location.search);
-        logMessage("📜 Полный список параметров: " + urlParams.toString());
+        // **Альтернативный способ получить параметры из URL**
+        function getQueryParam(param) {
+            let result = new RegExp(param + "=([^&]*)", "i").exec(window.location.search);
+            return result ? result[1] : null;
+        }
 
-        const shopId = urlParams.get('shop_id');
-        const employeeId = urlParams.get('employee_id');
+        const shopId = getQueryParam("shop_id");
+        const employeeId = getQueryParam("employee_id");
 
         logMessage("🔍 Полученные параметры:");
         logMessage("➡️ shop_id: " + (shopId ? shopId : "❌ Параметр shop_id отсутствует!"));
