@@ -39,17 +39,24 @@
     </style>
 </head>
 <body>
-
     <div class="modal" id="choiceModal">
         <p>Как открыть страницу отзывов?</p>
         <a id="openBrowser" href="#" target="_blank">🌍 Открыть в браузере</a>
     </div>
-
     <script>
         // Получаем параметры из URL
         const urlParams = new URLSearchParams(window.location.search);
         const shopId = urlParams.get('shop_id');
         const employeeId = urlParams.get('employee_id');
+
+        // Проверяем наличие shop_id
+        if (!shopId) {
+            console.error("Ошибка: параметр 'shop_id' отсутствует в URL.");
+            alert("Ошибка: параметр 'shop_id' отсутствует в URL. Передайте его в виде ?shop_id=1");
+            document.getElementById('openBrowser').href = "https://yandex.ru/maps/";
+            document.getElementById('openBrowser').textContent = "❌ Ошибка: Откройте страницу с корректным shop_id";
+            return;
+        }
 
         // **Правильные ссылки для браузера (отзывы)**
         const reviewsBrowser = {
@@ -58,9 +65,17 @@
             "3": "https://yandex.ru/maps/org/petrov_jewelry_watch/197362536275/reviews/"
         };
 
-        let browserUrl = reviewsBrowser[shopId] || "https://yandex.ru/maps/";
+        // Проверяем, что shop_id существует в объекте reviewsBrowser
+        if (!reviewsBrowser[shopId]) {
+            console.error(`Ошибка: shop_id=${shopId} не найден в списке доступных магазинов.`);
+            alert(`Ошибка: shop_id=${shopId} не найден в списке доступных магазинов.`);
+            document.getElementById('openBrowser').href = "https://yandex.ru/maps/";
+            document.getElementById('openBrowser').textContent = "❌ Ошибка: Некорректный shop_id";
+            return;
+        }
 
-        // **Выводим ссылку в консоль (для проверки)**
+        // Устанавливаем правильную ссылку
+        const browserUrl = reviewsBrowser[shopId];
         console.log("Ссылка на отзывы в браузере:", browserUrl);
 
         // Фиксация в Яндекс Метрике
@@ -70,7 +85,6 @@
 
         // Устанавливаем ссылку для открытия в браузере
         document.getElementById('openBrowser').href = browserUrl;
-
     </script>
 </body>
 </html>
