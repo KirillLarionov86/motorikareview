@@ -6,19 +6,24 @@
     <title>Перенаправление...</title>
 </head>
 <body>
-    <p id="message">Перенаправляем вас на страницу отзывов...</p>
+    <p id="log">Перенаправляем вас на страницу отзывов...</p>
+
     <script>
+        function logMessage(message) {
+            console.log(message);
+            document.getElementById('log').innerHTML += "<br>" + message;
+        }
+
+        logMessage("🔵 Начинаем обработку редиректа...");
+
         // Получаем параметры из URL
         const urlParams = new URLSearchParams(window.location.search);
         const shopId = urlParams.get('shop_id');
         const employeeId = urlParams.get('employee_id');
 
-        // Проверяем наличие shop_id
-        if (!shopId) {
-            console.error("Ошибка: параметр 'shop_id' отсутствует в URL.");
-            document.getElementById('message').textContent = "❌ Ошибка: Параметр 'shop_id' отсутствует в URL.";
-            return;
-        }
+        logMessage("🔍 Полученные параметры:");
+        logMessage("➡️ shop_id: " + shopId);
+        logMessage("➡️ employee_id: " + employeeId);
 
         // **Правильные ссылки для отзывов**
         const reviewsUrl = {
@@ -27,26 +32,36 @@
             "3": "https://yandex.ru/maps/org/petrov_jewelry_watch/197362536275/reviews/"
         };
 
-        // Проверяем, что shop_id существует в объекте reviewsUrl
-        if (!reviewsUrl[shopId]) {
-            console.error(`Ошибка: shop_id=${shopId} не найден в списке доступных магазинов.`);
-            document.getElementById('message').textContent = `❌ Ошибка: shop_id=${shopId} не найден в списке доступных магазинов.`;
-            return;
-        }
-
-        // Формируем правильную ссылку
         let redirectUrl = reviewsUrl[shopId];
+
+        logMessage("📌 Проверяем соответствие shop_id...");
+        if (redirectUrl) {
+            logMessage("✅ Найдена правильная ссылка: " + redirectUrl);
+        } else {
+            logMessage("❌ Ошибка! Неизвестный shop_id: " + shopId);
+        }
 
         // **Фиксация перехода в Яндекс.Метрике**
         if (employeeId) {
+            logMessage("📊 Фиксируем событие в Яндекс.Метрике...");
             ym(80551024, 'reachGoal', 'review_redirect', { employee_id: employeeId, shop_id: shopId });
+        } else {
+            logMessage("⚠️ Внимание: employee_id не указан.");
         }
 
-        // **Выводим ссылку в консоль для проверки**
-        console.log("Редирект на:", redirectUrl);
-
-        // **Гарантированный редирект**
-        window.location.href = redirectUrl;
+        // **Выводим итоговую ссылку на экран**
+        if (redirectUrl) {
+            logMessage("🚀 Готовимся к редиректу...");
+            logMessage("🌍 Открываем: " + redirectUrl);
+            
+            // **Перенаправление (гарантированное)**
+            setTimeout(() => {
+                window.location.replace(redirectUrl);
+            }, 1000);
+        } else {
+            logMessage("❌ Ошибка! Не удалось определить страницу отзывов.");
+            document.body.innerHTML = "<h2 style='color: red;'>Ошибка: Неверный shop_id!</h2>";
+        }
     </script>
 </body>
 </html>
