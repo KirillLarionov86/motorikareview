@@ -53,7 +53,7 @@
         if (!shopId) {
             console.error("Ошибка: параметр 'shop_id' отсутствует в URL.");
             alert("Ошибка: параметр 'shop_id' отсутствует в URL. Передайте его в виде ?shop_id=1");
-            document.getElementById('openBrowser').href = "https://yandex.ru/maps/";
+            document.getElementById('openBrowser').href = "#";
             document.getElementById('openBrowser').textContent = "❌ Ошибка: Откройте страницу с корректным shop_id";
             return;
         }
@@ -69,7 +69,7 @@
         if (!reviewsBrowser[shopId]) {
             console.error(`Ошибка: shop_id=${shopId} не найден в списке доступных магазинов.`);
             alert(`Ошибка: shop_id=${shopId} не найден в списке доступных магазинов.`);
-            document.getElementById('openBrowser').href = "https://yandex.ru/maps/";
+            document.getElementById('openBrowser').href = "#";
             document.getElementById('openBrowser').textContent = "❌ Ошибка: Некорректный shop_id";
             return;
         }
@@ -97,13 +97,24 @@
 
         console.log("Финальная ссылка:", finalUrl);
 
+        // Устанавливаем финальную ссылку для кнопки
+        const button = document.getElementById('openBrowser');
+        button.href = finalUrl;
+
+        // Добавляем обработчик клика для явного перехода
+        button.addEventListener('click', function(event) {
+            event.preventDefault(); // Предотвращаем стандартное поведение
+            if (button.href) {
+                window.open(button.href, '_blank'); // Открываем ссылку в новой вкладке
+            } else {
+                alert("Ошибка: Ссылка не установлена!");
+            }
+        });
+
         // Фиксация в Яндекс Метрике
         if (employeeId) {
             ym(80551024, 'reachGoal', 'review_redirect', { employee_id: employeeId, shop_id: shopId });
         }
-
-        // Устанавливаем финальную ссылку для кнопки
-        document.getElementById('openBrowser').href = finalUrl;
     </script>
 </body>
 </html>
