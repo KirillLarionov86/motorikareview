@@ -52,21 +52,22 @@
         const shopId = urlParams.get('shop_id');
         const employeeId = urlParams.get('employee_id');
 
-        // **Правильные ссылки для браузера и мобильного приложения**
+        // **Правильные ссылки для браузера**
         const reviewsBrowser = {
             "1": "https://yandex.ru/maps/org/petrov_jewelry_watch/202367052946/reviews/",
             "2": "https://yandex.ru/maps/org/petrov_jewelry_watch/98434987667/reviews/",
             "3": "https://yandex.ru/maps/org/petrov_jewelry_watch/197362536275/reviews/"
         };
 
+        // **Правильные ссылки для мобильного приложения (открытие карточки компании)**
         const reviewsApp = {
-            "1": "https://yandex.ru/maps/org/petrov_jewelry_watch/202367052946?si=e85a525rup917a49htgq24gav8",
-            "2": "https://yandex.ru/maps/org/petrov_jewelry_watch/98434987667?si=e85a525rup917a49htgq24gav8",
-            "3": "https://yandex.ru/maps/org/petrov_jewelry_watch/197362536275?si=e85a525rup917a49htgq24gav8"
+            "1": "yandexmaps://maps.yandex.ru/?oid=202367052946",
+            "2": "yandexmaps://maps.yandex.ru/?oid=98434987667",
+            "3": "yandexmaps://maps.yandex.ru/?oid=197362536275"
         };
 
         let browserUrl = reviewsBrowser[shopId] || "https://yandex.ru/maps";
-        let appUrl = reviewsApp[shopId] || "https://yandex.ru/maps";
+        let appUrl = reviewsApp[shopId] || "yandexmaps://maps.yandex.ru";
 
         // Фиксация в Яндекс Метрике
         if (employeeId) {
